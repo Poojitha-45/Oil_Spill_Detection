@@ -1,0 +1,12 @@
+# Ignore dataset folder
+15298010/
+
+# Ignore Python cache
+__pycache__/
+
+# Ignore compiled python files
+*.pyc
+# Ignore trained model files
+*.pth
+*.h5
+*.ckpt
