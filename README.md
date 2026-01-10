@@ -73,7 +73,6 @@ Mask Encoding:
 White (1) → Oil
 Black (0) → Water
 
-Dataset Structure:
 
 
 
@@ -113,11 +112,9 @@ SAR images are single-channel (grayscale)
 Oil regions appear brighter
 Class imbalance exists (water dominates)
 
-📷 Add EDA plots here
+<img width="930" height="674" alt="image" src="https://github.com/user-attachments/assets/b065cc83-bd92-4844-9ab1-d240d469e918" />
 
 
-
-(Histogram, sample images, mask distribution)
 
 
                        ---7️⃣ Data Preprocessing---
@@ -144,7 +141,7 @@ Architecture Highlights:
 -->Decoder (expanding path) restores spatial resolution
 -->Skip connections preserve fine-grained details
 -->Final sigmoid layer outputs pixel-wise probabilities
-📷 Add U-Net architecture diagram here
+
 
 
                                ----9️⃣ Model Training---
