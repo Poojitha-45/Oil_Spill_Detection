@@ -20,7 +20,8 @@ MODEL_URL = "https://drive.google.com/uc?id=1leD8XL-mqN-BNh7Pwa-_NdizQIdRcIXk"
 
 # Download model if not present (Streamlit Cloud)
 if not os.path.exists(MODEL_PATH):
-    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False, fuzzy=True)
+
 
 model = UNet().to(DEVICE)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
