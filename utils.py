@@ -11,7 +11,7 @@ from model import UNet
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # -------------------------------------------------
-# Load Model (HUGGING FACE – RELIABLE)
+# Load Model (Hugging Face – CORRECT WAY)
 # -------------------------------------------------
 MODEL_PATH = "unet_oilspill_aug_final.pth"
 MODEL_URL = (
@@ -21,12 +21,12 @@ MODEL_URL = (
 
 def download_model(url, path):
     if not os.path.exists(path):
-        with requests.get(url, stream=True, timeout=60) as r:
-            r.raise_for_status()
-            with open(path, "wb") as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
+        response = requests.get(url, stream=True, timeout=120)
+        response.raise_for_status()
+        with open(path, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
 
 download_model(MODEL_URL, MODEL_PATH)
 
@@ -67,7 +67,10 @@ def predict(img):
 # Overlay Creation
 # -------------------------------------------------
 def create_overlay(original_bgr, binary_mask, alpha=0.5):
-    overlay = cv2.resize(original_bgr, (binary_mask.shape[1], binary_mask.shape[0]))
+    overlay = cv2.resize(
+        original_bgr,
+        (binary_mask.shape[1], binary_mask.shape[0])
+    )
     red_mask = np.zeros_like(overlay)
     red_mask[:, :, 2] = binary_mask * 255
     blended = cv2.addWeighted(red_mask, alpha, overlay, 1 - alpha, 0)
@@ -82,10 +85,25 @@ def compute_oil_severity(binary_mask):
     oil_percentage = (oil_pixels / total_pixels) * 100
 
     if oil_percentage == 0:
-        return {"oil_percentage": 0, "severity": "None", "risk": "No oil spill detected", "color": "🟢"}
+        severity = "None"
+        risk = "No oil spill detected"
+        color = "🟢"
     elif oil_percentage < 5:
-        return {"oil_percentage": round(oil_percentage, 2), "severity": "Low", "risk": "Minimal environmental impact", "color": "🟢"}
+        severity = "Low"
+        risk = "Minimal environmental impact"
+        color = "🟢"
     elif oil_percentage < 20:
-        return {"oil_percentage": round(oil_percentage, 2), "severity": "Medium", "risk": "Moderate environmental risk", "color": "🟡"}
+        severity = "Medium"
+        risk = "Moderate environmental risk"
+        color = "🟡"
     else:
-        return {"oil_percentage": round(oil_percentage, 2), "severity": "High", "risk": "Severe environmental threat", "color": "🔴"}
+        severity = "High"
+        risk = "Severe environmental threat"
+        color = "🔴"
+
+    return {
+        "oil_percentage": round(oil_percentage, 2),
+        "severity": severity,
+        "risk": risk,
+        "color": color
+    }
