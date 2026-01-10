@@ -1,6 +1,8 @@
+import os
 import cv2
 import torch
 import numpy as np
+import gdown
 from model import UNet
 
 # -------------------------------------------------
@@ -9,9 +11,16 @@ from model import UNet
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # -------------------------------------------------
-# Load Model
+# Load Model (STREAMLIT SAFE)
 # -------------------------------------------------
 MODEL_PATH = "unet_oilspill_aug_final.pth"
+
+# Google Drive direct download URL
+MODEL_URL = "https://drive.google.com/uc?id=1leD8XL-mqN-BNh7Pwa-_NdizQIdRcIXk"
+
+# Download model if not present (Streamlit Cloud)
+if not os.path.exists(MODEL_PATH):
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
 
 model = UNet().to(DEVICE)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
@@ -67,7 +76,10 @@ def create_overlay(original_bgr, binary_mask, alpha=0.5):
     """
     White mask = oil spill (red overlay)
     """
-    overlay = cv2.resize(original_bgr, (binary_mask.shape[1], binary_mask.shape[0]))
+    overlay = cv2.resize(
+        original_bgr,
+        (binary_mask.shape[1], binary_mask.shape[0])
+    )
 
     red_mask = np.zeros_like(overlay)
     red_mask[:, :, 2] = binary_mask * 255  # RED = oil
