@@ -184,6 +184,22 @@ Architecture Highlights:
 -->Final sigmoid layer outputs pixel-wise probabilities
 
 
+👉Tech Stack:
+
+Python
+
+PyTorch
+
+OpenCV
+
+NumPy
+
+Streamlit
+
+SAR Satellite Imagery
+
+Git & GitHub
+
 
                                ----9️⃣ Model Training---
 
@@ -324,8 +340,11 @@ The application is deployed using Streamlit Community Cloud.
 
 -->GitHub-linked deployment
 
+🔗 Live Application Demo
 
-🔗 Live App Link:
+You can access the fully deployed and interactive version of this project here:
+
+
 https://oil-spilldetection-2k25.streamlit.app/
 
 
@@ -407,6 +426,16 @@ Real-time satellite feed
                                       ----19️⃣ Conclusion----
 
 This project demonstrates a complete AI solution, from raw satellite data to a deployed application, capable of detecting and assessing oil spills with high precision. It highlights the practical use of deep learning in environmental monitoring and disaster management.
+
+
+👩‍💻 Author
+
+Name: Poojitha
+
+Role: AI / ML Developer
+
+Project Type: Academic / Research / Internship Project
+
 
 
 
